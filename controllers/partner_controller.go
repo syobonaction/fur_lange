@@ -28,10 +28,10 @@ func GetPartner(c *fiber.Ctx) error {
 
 	err := partnerCollection.FindOne(ctx, bson.M{"_id": objId}).Decode(&partner)
 	if err != nil {
-		return c.Status(http.StatusInternalServerError).JSON(responses.PartnerResponse{Status: http.StatusInternalServerError, Message: "error", Data: &fiber.Map{"data": err.Error()}})
+		return c.Status(http.StatusInternalServerError).JSON(responses.PartnerResponse{Status: http.StatusInternalServerError, Message: "error", Data: &fiber.Map{"partners": err.Error()}})
 	}
 
-	return c.Status(http.StatusOK).JSON(responses.PartnerResponse{Status: http.StatusOK, Message: "success", Data: &fiber.Map{"data": partner}})
+	return c.Status(http.StatusOK).JSON(responses.PartnerResponse{Status: http.StatusOK, Message: "success", Data: &fiber.Map{"partners": partner}})
 }
 
 func GetAllPartners(c *fiber.Ctx) error {
@@ -42,7 +42,7 @@ func GetAllPartners(c *fiber.Ctx) error {
 	results, err := partnerCollection.Find(ctx, bson.M{})
 
 	if err != nil {
-		return c.Status(http.StatusInternalServerError).JSON(responses.PartnerResponse{Status: http.StatusInternalServerError, Message: "error", Data: &fiber.Map{"data": err.Error()}})
+		return c.Status(http.StatusInternalServerError).JSON(responses.PartnerResponse{Status: http.StatusInternalServerError, Message: "error", Data: &fiber.Map{"partners": err.Error()}})
 	}
 
 	//reading from the db in an optimal way
@@ -50,13 +50,13 @@ func GetAllPartners(c *fiber.Ctx) error {
 	for results.Next(ctx) {
 		var singlePartner models.Partner
 		if err = results.Decode(&singlePartner); err != nil {
-			return c.Status(http.StatusInternalServerError).JSON(responses.PartnerResponse{Status: http.StatusInternalServerError, Message: "error", Data: &fiber.Map{"data": err.Error()}})
+			return c.Status(http.StatusInternalServerError).JSON(responses.PartnerResponse{Status: http.StatusInternalServerError, Message: "error", Data: &fiber.Map{"partners": err.Error()}})
 		}
 
 		partners = append(partners, singlePartner)
 	}
 
 	return c.Status(http.StatusOK).JSON(
-		responses.PartnerResponse{Status: http.StatusOK, Message: "success", Data: &fiber.Map{"data": partners}},
+		responses.PartnerResponse{Status: http.StatusOK, Message: "success", Data: &fiber.Map{"partners": partners}},
 	)
 }

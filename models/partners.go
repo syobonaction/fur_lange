@@ -1,8 +1,13 @@
 package models
 
+type Response struct {
+	Status  int      `json:"status"`
+	Message string   `json:"message"`
+	Data    Partners `json:"data"`
+}
+
 type Partners struct {
-	Partners []Partner
-	Total    int
+	Partners []Partner `json:"partners"`
 }
 
 type Partner struct {

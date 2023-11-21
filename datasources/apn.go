@@ -143,7 +143,6 @@ func GetAWSPartners(start int, size int) []*model.Partner {
 	starting_record := strconv.Itoa(start)
 	record_size := strconv.Itoa(size)
 	url := fmt.Sprintf("https://api.finder.partners.aws.a2z.com/search?locale=en&from=%s&size=%s", starting_record, record_size)
-	fmt.Println(url)
 	resp, err := http.Get(url)
 
 	if err != nil {

@@ -1,4 +1,4 @@
-package collect
+package tools
 
 import (
 	"context"
@@ -16,7 +16,7 @@ import (
 var collection *mongo.Collection
 var ctx = context.TODO()
 
-func collect() {
+func Collect(args ...string) error {
 	loadEnv()
 	connectMongo()
 
@@ -35,6 +35,8 @@ func collect() {
 	for _, p := range partnerData {
 		createRecord(p)
 	}
+
+	return nil
 }
 
 func connectMongo() {

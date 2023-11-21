@@ -1,18 +1,19 @@
 package main
 
 import (
-	"github.com/gofiber/fiber/v2"
-	"github.com/syobonaction/fur_lange/configs"
-	"github.com/syobonaction/fur_lange/routes"
+	"github.com/syobonaction/fur_lange/tools"
+	"github.com/turret-io/go-menu/menu"
 )
 
 func main() {
-	app := fiber.New()
+	commandOptions := []menu.CommandOption{
+		{Command: "Server", Description: "Runs the mongo server.", Function: tools.RunServer},
+		{Command: "Migrate", Description: "Migrate data to pgsql", Function: tools.MigratePgsql},
+		{Command: "Collect", Description: "Collect data from APN", Function: tools.Collect},
+	}
 
-	//run database
-	configs.ConnectDB()
+	menuOptions := menu.NewMenuOptions("'menu' for help > ", 0)
 
-	routes.PartnerRoute(app)
-
-	app.Listen(":6000")
+	menu := menu.NewMenu(commandOptions, menuOptions)
+	menu.Start()
 }
